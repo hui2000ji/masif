@@ -51,5 +51,5 @@ def make_protein_pyg(d, save_dir=Path('data_preparation/04c-precomputation_pyg')
 if __name__ == '__main__':
     root = Path('data_preparation/04a-precomputation_12A/precomputation/')
     dirs = list(root.iterdir())
-    with Pool(4) as p:
+    with Pool(6) as p:
         p.map(make_protein_pyg, dirs)
