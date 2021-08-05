@@ -154,7 +154,7 @@ def compute_thetas(plane, vix, verts, faces, normal, neighbors, idx):
     except:
         set_trace()
      
-    # Compute the normal for tt by averagin over the vertex normals
+    # Compute the normal for face tt by averaging over the vertex normals
     normal_tt = np.mean([normal[tt[0]], normal[tt[1]], normal[tt[2]]], axis=0)
 
     # Find the two vertices (v1ix and v2ix) in tt that are not vix

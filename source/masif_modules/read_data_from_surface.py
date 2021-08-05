@@ -22,7 +22,7 @@ def read_data_from_surface(ply_fn, params):
     """
     mesh = pymesh.load_mesh(ply_fn)
 
-    # Normals: 
+    # Normals: nx attribute of vertices
     n1 = mesh.get_attribute("vertex_nx")
     n2 = mesh.get_attribute("vertex_ny")
     n3 = mesh.get_attribute("vertex_nz")
@@ -46,7 +46,7 @@ def read_data_from_surface(ply_fn, params):
     si = (k1+k2)/(k1-k2)
     si = np.arctan(si)*(2/np.pi)
 
-    # Normalize the charge.
+    # Normalize the charge to [-1, 1].
     charge = mesh.get_attribute("vertex_charge")
     charge = normalize_electrostatics(charge)
 
@@ -87,7 +87,7 @@ def read_data_from_surface(ply_fn, params):
         input_feat[vix, :len(neigh_vix), 3] = charge[neigh_vix]
         input_feat[vix, :len(neigh_vix), 4] = hphob[neigh_vix]
         
-    return input_feat, rho, theta, mask, neigh_indices, iface_labels, np.copy(mesh.vertices)
+    return input_feat, rho, theta, mask, neigh_indices, iface_labels, np.copy(mesh.vertices), normals
 
 # From a full shape in a full protein, extract a patch around a vertex.
 # If patch_indices = True, then store the indices of all neighbors.

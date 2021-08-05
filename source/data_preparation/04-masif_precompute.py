@@ -69,9 +69,10 @@ for ppi_pair_id in ppi_pair_list:
     theta = {}
     iface_labels = {}
     verts = {}
+    normals = {}
 
     for pid in pids:
-        input_feat[pid], rho[pid], theta[pid], mask[pid], neigh_indices[pid], iface_labels[pid], verts[pid] = read_data_from_surface(ply_file[pid], params)
+        input_feat[pid], rho[pid], theta[pid], mask[pid], neigh_indices[pid], iface_labels[pid], verts[pid], normals[pid] = read_data_from_surface(ply_file[pid], params)
 
     if len(pids) > 1 and masif_app == 'masif_ppi_search':
         start_time = time.time()
@@ -86,6 +87,7 @@ for ppi_pair_id in ppi_pair_list:
         np.save(my_precomp_dir+pid+'_rho_wrt_center', rho[pid])
         np.save(my_precomp_dir+pid+'_theta_wrt_center', theta[pid])
         np.save(my_precomp_dir+pid+'_input_feat', input_feat[pid])
+        np.save(my_precomp_dir+pid+'_normals', normals[pid])
         np.save(my_precomp_dir+pid+'_mask', mask[pid])
         np.save(my_precomp_dir+pid+'_list_indices', neigh_indices[pid])
         np.save(my_precomp_dir+pid+'_iface_labels', iface_labels[pid])
@@ -93,3 +95,7 @@ for ppi_pair_id in ppi_pair_list:
         np.save(my_precomp_dir+pid+'_X.npy', verts[pid][:,0])
         np.save(my_precomp_dir+pid+'_Y.npy', verts[pid][:,1])
         np.save(my_precomp_dir+pid+'_Z.npy', verts[pid][:,2])
+
+# global: id, x_names
+# node: x, pos, normals
+# edge: rho, theta, dx
