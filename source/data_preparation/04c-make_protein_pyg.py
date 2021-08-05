@@ -7,7 +7,7 @@ import torch
 from torch_geometric.data import Data
 
 
-def make_protein_pyg(d, save_dir=Path('data_preparation/04c-protein_pyg')):
+def make_protein_pyg(d, save_dir=Path('data_preparation/04c-precomputation_pyg')):
     data = dict()
     for f in [
         'p1_list_indices.npy',
