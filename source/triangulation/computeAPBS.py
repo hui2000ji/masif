@@ -23,7 +23,7 @@ def computeAPBS(vertices, pdb_file, tmp_file_base):
     pdbname = pdb_file.split("/")[-1]
     args = [
         pdb2pqr_bin,
-        "--ff=parse",
+        "--ff=PARSE",
         "--whitespace",
         "--noopt",
         "--apbs-input",
@@ -36,6 +36,7 @@ def computeAPBS(vertices, pdb_file, tmp_file_base):
     args = [apbs_bin, filename_base + ".in"]
     p2 = Popen(args, stdout=PIPE, stderr=PIPE, cwd=directory)
     stdout, stderr = p2.communicate()
+
 
     vertfile = open(directory + "/" + filename_base + ".csv", "w")
     for vert in vertices:

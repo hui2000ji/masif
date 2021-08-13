@@ -20,6 +20,8 @@ if not os.path.exists(masif_opts['raw_pdb_dir']):
 if not os.path.exists(masif_opts['tmp_dir']):
     os.mkdir(masif_opts['tmp_dir'])
 
+print(masif_opts['tmp_dir'])
+
 in_fields = sys.argv[1].split('_')
 pdb_id = in_fields[0]
 

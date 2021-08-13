@@ -9,14 +9,14 @@
 #SBATCH --output=exelogs/out/_masif_precompute.%A_%a.out
 #SBATCH --error=exelogs/err/_masif_precompute.%A_%a.err
 
-i=1
+SLURM_ARRAY_TASK_ID=0
+i=0
+echo $i
 while read p; do
-    if [ $(( i % 1001 )) == ${SLURM_ARRAY_TASK_ID} ]; then
-        FIELD1=$(echo $p| cut -d" " -f1)
-        PDBID=$(echo $FIELD1| cut -d"_" -f1)
-        CHAIN1=$(echo $FIELD1| cut -d"_" -f2)
-        CHAIN2=$(echo $FIELD1| cut -d"_" -f3)
-        ./data_prepare_one.sh $PDBID\_$CHAIN1\_$CHAIN2
+    echo $(( i % 1000 + 1 ))
+    if [ $(( i % 1000 + 1 )) == ${SLURM_ARRAY_TASK_ID} ]; then
+        echo $p
+        # ./data_prepare_one.sh $p
     fi
     i=$((i+1))
-done < lists/sequence_split_list.txt
+done < keys.txt
