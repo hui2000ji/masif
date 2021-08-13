@@ -2,7 +2,9 @@
 masif_root=$(git rev-parse --show-toplevel)
 masif_source=$masif_root/source/
 cd $masif_source
-
+conda init
+conda activate my-rdkit-env
+conda deactivate
 module load nixpkgs/16.09
 module load reduce/20180820
 # conda activate my-rdkit-env
