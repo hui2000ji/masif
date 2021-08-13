@@ -32,20 +32,16 @@ if len(sys.argv) <= 1:
 # Save the chains as separate files. 
 in_fields = sys.argv[1].split("_")
 pdb_id = in_fields[0]
-chain_ids1 = in_fields[1]
 
-if (len(sys.argv)>2) and (sys.argv[2]=='masif_ligand'):
-    pdb_filename = os.path.join(masif_opts["ligand"]["assembly_dir"],pdb_id+".pdb")
-else:
-    pdb_filename = masif_opts['raw_pdb_dir']+pdb_id+".pdb"
+pdb_filename = os.path.join(masif_opts["ligand"]["assembly_dir"], pdb_id, pdb_id + "_protein.pdb")
 tmp_dir= masif_opts['tmp_dir']
-protonated_file = tmp_dir+"/"+pdb_id+".pdb"
-protonate(pdb_filename, protonated_file)
-pdb_filename = protonated_file
+# protonated_file = tmp_dir+"/"+pdb_id+".pdb"
+# protonate(pdb_filename, protonated_file)
+# pdb_filename = protonated_file
 
 # Extract chains of interest.
-out_filename1 = tmp_dir+"/"+pdb_id+"_"+chain_ids1
-extractPDB(pdb_filename, out_filename1+".pdb", chain_ids1)
+out_filename1 = tmp_dir+"/"+pdb_id
+extractPDB(pdb_filename, out_filename1+".pdb")
 
 # Compute MSMS of surface w/hydrogens, 
 try:
