@@ -3,8 +3,8 @@ import tempfile
 masif_opts = {}
 # Default directories
 masif_opts["raw_pdb_dir"] = "data_preparation/00-raw_pdbs/"
-masif_opts["pdb_chain_dir"] = "data_preparation/01-benchmark_pdbs/"
-masif_opts["ply_chain_dir"] = "data_preparation/01-benchmark_surfaces/"
+masif_opts["pdb_chain_dir"] = "../../data/PDBbind-refine-set/preprocessing/pdb"
+masif_opts["ply_chain_dir"] = "../../data/PDBbind-refine-set/preprocessing/ply"
 masif_opts["tmp_dir"] = tempfile.gettempdir()
 masif_opts["ply_file_template"] = masif_opts["ply_chain_dir"] + "/{}_{}.ply"
 
@@ -67,7 +67,10 @@ masif_opts["ligand"]["assembly_dir"] = "../../data/PDBbind-refine-set/"
 masif_opts["ligand"]["ligand_coords_dir"] = "data_preparation/00c-ligand_coords"
 masif_opts["ligand"][
     "masif_precomputation_dir"
-] = "data_preparation/04a-precomputation_12A/precomputation/"
+] = "../../data/PDBbind-refine-set/preprocessing/npy/"
+masif_opts["ligand"][
+    "masif_pyg_dir"
+] = "../../data/PDBbind-refine-set/preprocessing/pyg/"
 masif_opts["ligand"]["max_shape_size"] = 200
 masif_opts["ligand"]["feat_mask"] = [1.0] * 5
 masif_opts["ligand"]["train_fract"] = 0.9 * 0.8

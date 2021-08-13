@@ -1,13 +1,14 @@
 from argparse import Namespace
 from pathlib import Path
 from multiprocessing import Pool
-
+import sys
 import numpy as np
 import torch
 from torch_geometric.data import Data
+from default_config.masif_opts import masif_opts
 
 
-def make_protein_pyg(d, save_dir=Path('data_preparation/04c-precomputation_pyg'), exists_ok=True):
+def make_protein_pyg(d, save_dir=Path(masif_opts['ligand']['masif_pyg_dir']), exists_ok=True):
     if (save_dir / f'{d.name}.pt').exists() and exists_ok:
         return
     data = dict()
@@ -51,7 +52,11 @@ def make_protein_pyg(d, save_dir=Path('data_preparation/04c-precomputation_pyg')
 
 
 if __name__ == '__main__':
-    root = Path('data_preparation/04a-precomputation_12A/precomputation/')
-    dirs = list(root.iterdir())
-    with Pool(6) as p:
-        p.map(make_protein_pyg, dirs)
+    if len(sys.argv) <= 1:
+        root = Path(masif_opts['ligand']['masif_precomputation_dir'])
+        dirs = list(root.iterdir())
+        with Pool(4) as p:
+            p.map(make_protein_pyg, dirs)
+    else:
+        d = sys.argv[1]
+        make_protein_pyg(d)
