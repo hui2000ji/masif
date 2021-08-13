@@ -9,12 +9,13 @@
 i=0
 for p in ../../data/PDBbind-refine-set
 do
-    if [ ${#p} == 4 ]
+    name=$(basename p)
+    if [ ${#name} == 4 ]
     then
         if [ $(( i % 50 )) == ${SLURM_ARRAY_TASK_ID} ]
             then
-            echo $p
-            ../data/masif_ligand/data_prepare_one.sh $p
+            echo $name
+            ../data/masif_ligand/data_prepare_one.sh $name
         fi
         i=$((i+1))
     fi
