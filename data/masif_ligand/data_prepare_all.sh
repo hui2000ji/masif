@@ -6,6 +6,10 @@
 #SBATCH --array=0-49
 #SBATCH --output=../../logs/masif_precompute.%A_%a.out
 
+masif_root=$(git rev-parse --show-toplevel)
+masif_source=$masif_root/source/
+cd $masif_source
+
 i=0
 for p in ../../data/PDBbind-refine-set/*
 do
