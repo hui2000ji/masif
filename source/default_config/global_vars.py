@@ -3,6 +3,7 @@
 # Released under an Apache License 2.0
 
 import os 
+import sys
 from IPython.core.debugger import set_trace
 epsilon = 1.0e-6
 

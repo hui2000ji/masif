@@ -3,7 +3,7 @@ extractPDB.py: Extract selected chains from a PDB and save the extracted chains 
 Pablo Gainza - LPDI STI EPFL 2019
 Released under an Apache License 2.0
 """
-from Bio.PDB import *
+from Bio.PDB import PDBParser, Select, Selection, StructureBuilder, PDBIO
 
 from Bio.SeqUtils import IUPACData
 PROTEIN_LETTERS = [x.upper() for x in IUPACData.protein_letters_3to1.keys()]
@@ -36,7 +36,7 @@ def extractPDB(
     parser = PDBParser(QUIET=True)
     struct = parser.get_structure(infilename, infilename)
     model = Selection.unfold_entities(struct, "M")[0]
-    chains = Selection.unfold_entities(struct, "C")
+    # chains = Selection.unfold_entities(struct, "C")
     # Select residues to extract and build new structure
     structBuild = StructureBuilder.StructureBuilder()
     structBuild.init_structure("output")

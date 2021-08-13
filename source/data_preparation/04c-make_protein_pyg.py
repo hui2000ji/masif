@@ -46,7 +46,7 @@ def make_protein_pyg(d, save_dir=Path('data_preparation/04c-precomputation_pyg')
     theta = data.theta_wrt_center[mask]
     edge_attr = np.stack([rho, theta, ddc_src, ddc_tgt], axis=1)
 
-    tdata = Data(x=torch.FloatTensor(x), edge_index=torch.LongTensor(edge_index), edge_attr = torch.FloatTensor(edge_attr), normal=torch.FloatTensor(normal), pos=torch.FloatTensor(pos), id=d.name)
+    tdata = Data(x=torch.FloatTensor(x), edge_index=torch.LongTensor(edge_index), edge_attr=torch.FloatTensor(edge_attr), normal=torch.FloatTensor(normal), pos=torch.FloatTensor(pos), id=d.name)
     torch.save(tdata, save_dir / f'{d.name}.pt')
 
 

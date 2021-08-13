@@ -19,6 +19,7 @@ def computeMSMS(pdb_file,  protonate=True):
         output_pdb_as_xyzrn(pdb_file, out_xyzrn)
     else:
         print("Error - pdb2xyzrn is deprecated.")
+        import sys
         sys.exit(1)
     # Now run MSMS on xyzrn file
     FNULL = open(os.devnull, 'w')
