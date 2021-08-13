@@ -1,9 +1,7 @@
 # source /work/upcorreia/bin/load_masif_environment.sh
 masif_root=$(git rev-parse --show-toplevel)
 masif_source=$masif_root/source/
-masif_matlab=$masif_root/source/matlab_libs/
-export PYTHONPATH=$PYTHONPATH:$masif_source
-export masif_matlab
+cd $masif_source
 
 module load nixpkgs/16.09
 module load reduce/20180820
