@@ -6,45 +6,30 @@ import numpy as np
 import torch
 from torch_geometric.data import Data
 from default_config.masif_opts import masif_opts
+from masif_modules.read_data_from_surface import read_data_from_surface
 
 
 def make_protein_pyg(d, save_dir=Path(masif_opts['ligand']['masif_pyg_dir']), exists_ok=True):
     if (save_dir / f'{d.name}.pt').exists() and exists_ok:
         return
-    data = dict()
-    for f in [
-        'p1_list_indices.npy',
-        'p1_rho_wrt_center.npy',
-        'p1_theta_wrt_center.npy',
-        'p1_mask.npy',
-        # 'p1_iface_labels.npy',
-        'p1_input_feat.npy',
-        'p1_X.npy',
-        'p1_Y.npy',
-        'p1_Z.npy',
-        'p1_normals.npy',
-    ]:
-        arr = np.load(d / f, allow_pickle=True)
-        if arr.dtype == np.float64:
-            arr = arr.astype(np.float32)
-        data[f[3:-4]] = arr
-    data = Namespace(**data)
+    # Read directly from the ply file.
+    ply_file = masif_opts['ply_file_template'].format(d.name)
+        
+    # Compute shape complementarity between the two proteins. 
+    input_feat, rho, theta, mask, list_indices, _, pos, normal = read_data_from_surface(ply_file, masif_opts['ligand'])
 
-    pos = np.stack([data.X, data.Y, data.Z], axis=1)
-    normal = data.normals
+    x = input_feat[:, 0, [0, 2, 3, 4]]
 
-    x = data.input_feat[:, 0, [0, 2, 3, 4]]
-
-    edge_index = np.array([[i, j] for i, l_ in enumerate(data.list_indices) for j in l_[1:]]).T
+    edge_index = np.array([[i, j] for i, l_ in enumerate(list_indices) for j in l_[1:]]).T
     
-    mask = data.mask.astype(bool)
+    mask = mask.astype(bool)
     mask[:, 0] = False  # discard self loops
 
-    ddc = data.input_feat[:, :, 1]  # the ddc is actually an edge feature
+    ddc = input_feat[:, :, 1]  # the ddc is actually an edge feature
     ddc_tgt = ddc[mask]
     ddc_src = ddc[:, 0][edge_index[0]]
-    rho = data.rho_wrt_center[mask]
-    theta = data.theta_wrt_center[mask]
+    rho = rho[mask]
+    theta = theta[mask]
     edge_attr = np.stack([rho, theta, ddc_src, ddc_tgt], axis=1)
 
     tdata = Data(x=torch.FloatTensor(x), edge_index=torch.LongTensor(edge_index), edge_attr=torch.FloatTensor(edge_attr), normal=torch.FloatTensor(normal), pos=torch.FloatTensor(pos), id=d.name)

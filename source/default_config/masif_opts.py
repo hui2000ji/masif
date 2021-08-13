@@ -6,7 +6,7 @@ masif_opts["raw_pdb_dir"] = "data_preparation/00-raw_pdbs/"
 masif_opts["pdb_chain_dir"] = "../../data/PDBbind-refine-set/preprocessing/pdb"
 masif_opts["ply_chain_dir"] = "../../data/PDBbind-refine-set/preprocessing/ply"
 masif_opts["tmp_dir"] = tempfile.gettempdir()
-masif_opts["ply_file_template"] = masif_opts["ply_chain_dir"] + "/{}_{}.ply"
+masif_opts["ply_file_template"] = masif_opts["ply_chain_dir"] + "/{}.ply"
 
 # Surface features
 masif_opts["use_hbond"] = True

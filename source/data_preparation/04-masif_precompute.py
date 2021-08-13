@@ -32,69 +32,37 @@ elif masif_app == 'masif_site':
 elif masif_app == 'masif_ligand':
     params = masif_opts['ligand']
 
-ppi_pair_list = [sys.argv[2]]
+ppi_pair_id = sys.argv[2]
 
 total_shapes = 0
 total_ppi_pairs = 0
 np.random.seed(0)
 print('Reading data from input ply surface files.')
-for ppi_pair_id in ppi_pair_list:
 
-    all_list_desc = []
-    all_list_coords = []
-    all_list_shape_idx = []
-    all_list_names = []
-    idx_positives = []
+all_list_desc = []
+all_list_coords = []
+all_list_shape_idx = []
+all_list_names = []
+idx_positives = []
 
-    my_precomp_dir = params['masif_precomputation_dir']+ppi_pair_id+'/'
-    if not os.path.exists(my_precomp_dir):
-        os.makedirs(my_precomp_dir)
-    
-    # Read directly from the ply file.
-    fields = ppi_pair_id.split('_')
-    ply_file = {}
-    ply_file['p1'] = masif_opts['ply_file_template'].format(fields[0], fields[1])
+my_precomp_dir = params['masif_precomputation_dir']+ppi_pair_id+'/'
+if not os.path.exists(my_precomp_dir):
+    os.makedirs(my_precomp_dir)
 
-    if len (fields) == 2 or fields[2] == '':
-        pids = ['p1']
-    else:
-        ply_file['p2']  = masif_opts['ply_file_template'].format(fields[0], fields[2])
-        pids = ['p1', 'p2']
-        
-    # Compute shape complementarity between the two proteins. 
-    rho = {}
-    neigh_indices = {}
-    mask = {}
-    input_feat = {}
-    theta = {}
-    iface_labels = {}
-    verts = {}
-    normals = {}
 
-    for pid in pids:
-        input_feat[pid], rho[pid], theta[pid], mask[pid], neigh_indices[pid], iface_labels[pid], verts[pid], normals[pid] = read_data_from_surface(ply_file[pid], params)
 
-    if len(pids) > 1 and masif_app == 'masif_ppi_search':
-        start_time = time.time()
-        p1_sc_labels, p2_sc_labels = compute_shape_complementarity(ply_file['p1'], ply_file['p2'], neigh_indices['p1'],neigh_indices['p2'], rho['p1'], rho['p2'], mask['p1'], mask['p2'], params)
-        np.save(my_precomp_dir+'p1_sc_labels', p1_sc_labels)
-        np.save(my_precomp_dir+'p2_sc_labels', p2_sc_labels)
-        end_time = time.time()
-        print("Computing shape complementarity took {:.2f}".format(end_time-start_time))
-
-    # Save data only if everything went well. 
-    for pid in pids: 
-        np.save(my_precomp_dir+pid+'_rho_wrt_center', rho[pid])
-        np.save(my_precomp_dir+pid+'_theta_wrt_center', theta[pid])
-        np.save(my_precomp_dir+pid+'_input_feat', input_feat[pid])
-        np.save(my_precomp_dir+pid+'_normals', normals[pid])
-        np.save(my_precomp_dir+pid+'_mask', mask[pid])
-        np.save(my_precomp_dir+pid+'_list_indices', neigh_indices[pid])
-        np.save(my_precomp_dir+pid+'_iface_labels', iface_labels[pid])
-        # Save x, y, z
-        np.save(my_precomp_dir+pid+'_X.npy', verts[pid][:,0])
-        np.save(my_precomp_dir+pid+'_Y.npy', verts[pid][:,1])
-        np.save(my_precomp_dir+pid+'_Z.npy', verts[pid][:,2])
+# Save data only if everything went well. 
+np.save(my_precomp_dir+'rho_wrt_center', rho)
+np.save(my_precomp_dir+'theta_wrt_center', theta)
+np.save(my_precomp_dir+'input_feat', input_feat)
+np.save(my_precomp_dir+'normals', normals)
+np.save(my_precomp_dir+'mask', mask)
+np.save(my_precomp_dir+'list_indices', neigh_indices)
+np.save(my_precomp_dir+'iface_labels', iface_labels)
+# Save x, y, z
+np.save(my_precomp_dir+'X.npy', verts[:,0])
+np.save(my_precomp_dir+'Y.npy', verts[:,1])
+np.save(my_precomp_dir+'Z.npy', verts[:,2])
 
 # global: id, x_names
 # node: x, pos, normals
