@@ -12,6 +12,8 @@ from masif_modules.read_data_from_surface import read_data_from_surface
 def make_protein_pyg(prot_id, save_dir=Path(masif_opts['ligand']['masif_pyg_dir']), exists_ok=True):
     if (save_dir / f'{prot_id}.pt').exists() and exists_ok:
         return
+    elif not save_dir.exists():
+        save_dir.mkdir(parents=True)
     # Read directly from the ply file.
     ply_file = masif_opts['ply_file_template'].format(prot_id)
         
