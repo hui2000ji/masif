@@ -7,9 +7,9 @@
 #SBATCH --output=../../logs/masif_precompute.%A_%a.out
 
 i=0
-for p in ../../data/PDBbind-refine-set
+for p in ../../data/PDBbind-refine-set/*
 do
-    name=$(basename p)
+    name=$(basename $p)
     if [ ${#name} == 4 ]
     then
         if [ $(( i % 50 )) == ${SLURM_ARRAY_TASK_ID} ]
