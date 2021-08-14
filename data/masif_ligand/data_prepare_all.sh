@@ -4,8 +4,9 @@
 #SBATCH --mem 64G
 #SBATCH --time 08:00:00
 #SBATCH --array=0-49
-#SBATCH --output=../../logs/masif_precompute.%A_%a.out
+#SBATCH --output=/home/hycai/scratch/202107Docking/masif/logs/masif_precompute.%A_%a.out
 
+source ~/.bashrc
 masif_root=$(git rev-parse --show-toplevel)
 masif_source=$masif_root/source/
 cd $masif_source
